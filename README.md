@@ -1,6 +1,6 @@
-# KeepGongLearning
+# MoyuXingCe
 
-KeepGongLearning 是一个 Windows 在线行测摸鱼练习器。应用通过 `balagk.com` 的公开页面和游客练习接口读取试卷与选择题，再用本地 Qt Widgets 界面展示；题库和答题记录不会保存到本地数据库或 JSON 文件。
+MoyuXingCe 是一个 Windows 在线行测摸鱼练习器。应用通过 `balagk.com` 的公开页面和游客练习接口读取试卷与选择题，再用本地 Qt Widgets 界面展示；题库和答题记录不会保存到本地数据库或 JSON 文件。
 
 数据来源页面：<https://balagk.com/%E9%A2%98%E5%BA%93/>
 
