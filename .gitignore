@@ -1,0 +1,9 @@
+build/
+.vs/
+*.user
+*.suo
+out/
+dist/
+
+# Runtime data is created under the user's AppLocalData directory.
+data/runtime/
