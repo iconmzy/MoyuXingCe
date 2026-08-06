@@ -149,10 +149,20 @@ MainWindow::MainWindow(application::MainController* controller, QWidget* parent)
     pageStack_->addWidget(practicePage_);
     rootLayout->addWidget(workspace, 1);
 
-    statusLabel_ = new QLabel(centralWidget);
+    auto* footer = new QWidget(centralWidget);
+    footer->setObjectName(QStringLiteral("footerBar"));
+    auto* footerLayout = new QHBoxLayout(footer);
+    footerLayout->setContentsMargins(14, 4, 14, 4);
+    footerLayout->setSpacing(12);
+    statusLabel_ = new QLabel(footer);
     statusLabel_->setObjectName(QStringLiteral("statusBar"));
     statusLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    rootLayout->addWidget(statusLabel_);
+    footerLayout->addWidget(statusLabel_, 1);
+    accuracyLabel_ = new QLabel(QStringLiteral("已答 0/0 · 正确率 --"), footer);
+    accuracyLabel_->setObjectName(QStringLiteral("accuracyLabel"));
+    accuracyLabel_->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    footerLayout->addWidget(accuracyLabel_);
+    rootLayout->addWidget(footer);
     setCentralWidget(centralWidget);
     qApp->installEventFilter(this);
     loadAppearanceSettings();
@@ -164,7 +174,9 @@ MainWindow::MainWindow(application::MainController* controller, QWidget* parent)
         QWidget#workspaceRoot { background: #edf1f4; color: #25313c; }
         QWidget#officeHeader { background: #ffffff; border-bottom: 1px solid #cfd6dc; }
         QLabel#sectionLabel { color: #6b747d; margin-left: 12px; }
-        QLabel#statusBar { background: #f8fafb; color: #68727c; padding: 4px 14px; border-top: 1px solid #dce2e7; }
+        QWidget#footerBar { background: #f8fafb; border-top: 1px solid #dce2e7; }
+        QLabel#statusBar { color: #68727c; }
+        QLabel#accuracyLabel { color: #405968; font-weight: 600; }
         QPushButton { min-height: 27px; padding: 2px 11px; border: 1px solid #b9c3cc; background: #f9fbfc; border-radius: 3px; }
         QPushButton:hover { background: #e8f0f5; border-color: #8296a6; }
         QPushButton:pressed { background: #dce8ee; }
@@ -195,6 +207,8 @@ MainWindow::MainWindow(application::MainController* controller, QWidget* parent)
         this, &MainWindow::setLoading);
     connect(controller_, &application::MainController::modeChanged,
         this, &MainWindow::renderMode);
+    connect(controller_, &application::MainController::practiceProgressChanged,
+        this, &MainWindow::renderPracticeProgress);
     connect(controller_, &application::MainController::statusMessage,
         statusLabel_, &QLabel::setText);
     connect(controller_, &application::MainController::errorOccurred,
@@ -597,6 +611,9 @@ void MainWindow::renderAnswer(const domain::AnswerResult& result)
 
     for (QAbstractButton* button : optionGroup_->buttons()) {
         const QString option = QString(QChar::fromLatin1(static_cast<char>('A' + optionGroup_->id(button))));
+        if (option == result.selectedAnswer) {
+            button->setChecked(true);
+        }
         if (option == result.correctAnswer) {
             button->parentWidget()->setStyleSheet(
                 QStringLiteral("color: #2e7d32; font-weight: 600; background: #edf7ee;"));
@@ -629,10 +646,28 @@ void MainWindow::renderMode(application::MainController::AppMode mode)
         pageStack_->setCurrentWidget(practicePage_);
         practicePage_->raise();
     }
+    accuracyLabel_->setVisible(!office);
     titleLabel_->setText(QStringLiteral("项目工作台"));
     if (office) {
         notesEdit_->setPlainText(controller_->loadNotes());
     }
+}
+
+void MainWindow::renderPracticeProgress(int answered, int correct, int total)
+{
+    if (total <= 0) {
+        accuracyLabel_->setText(QStringLiteral("已答 0/0 · 正确率 --"));
+        return;
+    }
+    if (answered <= 0) {
+        accuracyLabel_->setText(QStringLiteral("已答 0/%1 · 正确率 --").arg(total));
+        return;
+    }
+    const int percentage = qRound((correct * 100.0) / answered);
+    accuracyLabel_->setText(QStringLiteral("已答 %1/%2 · 正确率 %3%")
+        .arg(answered)
+        .arg(total)
+        .arg(percentage));
 }
 
 void MainWindow::setLoading(bool loading)

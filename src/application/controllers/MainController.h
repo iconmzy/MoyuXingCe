@@ -56,15 +56,21 @@ signals:
     void answerEvaluated(const domain::AnswerResult& result);
     void loadingChanged(bool loading);
     void modeChanged(kgl::application::MainController::AppMode mode);
+    void practiceProgressChanged(int answered, int correct, int total);
     void statusMessage(const QString& message);
     void errorOccurred(const QString& message);
 
 private:
     void publishCurrentQuestion();
+    void loadPracticeProgress();
+    void savePracticeProgress() const;
+    void publishPracticeProgress();
 
     std::unique_ptr<infrastructure::BalaApiClient> apiClient_;
     std::unique_ptr<domain::INotesRepository> notesRepository_;
     domain::PaperDetail currentPaper_;
+    QVector<domain::AnswerResult> answerResults_;
+    QVector<bool> answerRecorded_;
     int currentQuestionIndex_ = -1;
     // Start in the innocuous work view; Ctrl+Space reveals the review panel.
     AppMode mode_ = AppMode::Office;

@@ -46,6 +46,7 @@ private slots:
     void jumpToQuestion();
     void toggleRealTitle();
     void showSettingsDialog();
+    void renderPracticeProgress(int answered, int correct, int total);
 
 private:
     QWidget* createPracticePage();
@@ -64,6 +65,7 @@ private:
     QGraphicsOpacityEffect* practiceOpacityEffect_ = nullptr;
     QLabel* titleLabel_ = nullptr;
     QLabel* statusLabel_ = nullptr;
+    QLabel* accuracyLabel_ = nullptr;
     QLabel* paperTitleLabel_ = nullptr;
     QLabel* questionMetaLabel_ = nullptr;
     QLabel* resultLabel_ = nullptr;
