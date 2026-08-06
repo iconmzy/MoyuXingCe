@@ -31,7 +31,7 @@ KeepGongLearning 是一个 Windows 在线行测摸鱼练习器。应用通过 `b
 - Windows 10 或 Windows 11 SDK
 - 用于 Windows 的 C++ CMake 工具
 
-![]()Qt 只需要 Core、Gui、Widgets 和 Network。当前版本不需要 Qt SQL、Qt WebEngine、数据库驱动或 MinGW。
+Qt 只需要 Core、Gui、Widgets 和 Network。当前版本不需要 Qt SQL、Qt WebEngine、数据库驱动或 MinGW。
 
 ## 构建
 
@@ -54,5 +54,6 @@ windeployqt build/msvc-debug/Debug/KeepGongLearning.exe
 
 
 
-使用界面截图：
+## 使用界面
 
+![MoyuXingCe 使用界面](resources/imgs/%E5%BA%94%E7%94%A8%E7%95%8C%E9%9D%A2.JPG)
