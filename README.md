@@ -58,3 +58,9 @@ windeployqt build/msvc-debug/Debug/KeepGongLearning.exe
 ## 使用界面
 
 ![MoyuXingCe 使用界面](resources/imgs/%E5%BA%94%E7%94%A8%E7%95%8C%E9%9D%A2.JPG)
+
+
+
+
+
+Tips：如果联网状态下无法加载数据集列表并打开的话，就是你们公司把这个在线网址ban了，只需要在启动程序的时候连接个人热点，打开一套卷子后就可以本地使用了。后续会考虑出纯离线的版本
